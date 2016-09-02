@@ -15,7 +15,7 @@ connector = pyGTrends(google_username, google_password)
 path = ""
 
 # Specify the filename of a CSV with a list of keywords in the variable, keyordcsv. The CSV should be one column, with header equal to Keywords (case sensitive).
-keywordcsv = ""
+keywordcsv = "keywords.csv"
 keywords = pd.read_csv(keywordcsv)
 
 # Downloads and Calculate Slope:
