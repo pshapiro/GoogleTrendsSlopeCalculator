@@ -15,14 +15,15 @@ connector = pyGTrends(google_username, google_password)
 path = ""
 
 # Specify the filename of a CSV with a list of keywords in the variable, keyordcsv. The CSV should be one column, with header equal to Keywords (case sensitive).
-keywordcsv = "keywords.csv"
+keywordcsv = ""
 keywords = pd.read_csv(keywordcsv)
 
 # Downloads and Calculate Slope:
 keywordlist = pd.DataFrame(columns=["keyword","slope"])
 for index, row in keywords.iterrows():
     print("Downloading Keyword #" + str(index))
-    connector.request_report(row[0],hl="en-US",cat=None,geo="US")
+    payload = {'geo': 'US', 'q': [row[0]]}
+    connector.request_report(payload)
     time.sleep(randint(5, 10))
     connector.save_csv(path, str(index))
     csvname = str(index)+".csv"
@@ -38,10 +39,10 @@ for index, row in keywords.iterrows():
     trenddata['year'] = pd.DatetimeIndex(trenddata['date']).year
     trenddata['month'] = pd.DatetimeIndex(trenddata['date']).month
     trenddata['day'] = pd.DatetimeIndex(trenddata['date']).day
-    
+
     maxyear = trenddata['year'].max()
     grouped = trenddata.groupby(['year']).mean()
-    
+
     def slope_formula(xone, yone, xtwo, ytwo):
         return (ytwo-yone)/(xtwo-xone)
 
